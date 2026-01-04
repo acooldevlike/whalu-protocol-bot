@@ -2,6 +2,11 @@
 
 Professional Telegram bot for automated Solana token buybacks with an integrated lottery reward system.
 
+## 🔗 Links
+
+- **Website**: [https://pegasusprotocol.tech/](https://pegasusprotocol.tech/)
+- **Telegram Bot**: [@pegasus_protocol_bot](https://t.me/pegasus_protocol_bot)
+
 ## 📋 Overview
 
 Pegasus Protocol is a sophisticated Telegram bot that automates token buybacks on the Solana blockchain while rewarding token holders through a lottery system. The bot triggers lotteries at volume milestones (30k, 50k, then every 50k increment), creating an engaging ecosystem for token holders.
