@@ -139,16 +139,26 @@ bot.action('lottery', async (ctx) => {
     }
     try {
         const pool = db_1.default.prepare('SELECT * FROM lottery_pool WHERE id = 1').get();
-        const volume = db_1.default.prepare('SELECT total_volume FROM buyback_volume WHERE id = 1').get();
-        const progress = Math.min((volume.total_volume / pool.next_milestone) * 100, 100);
+        const currentMC = pool.current_market_cap || 0;
+        const nextMilestone = pool.next_milestone_market_cap || 30000;
+        const progress = Math.min((currentMC / nextMilestone) * 100, 100);
         const progressBar = '▓'.repeat(Math.floor(progress / 10)) + '░'.repeat(10 - Math.floor(progress / 10));
+        const formatMC = (mc) => {
+            if (mc >= 1000000)
+                return `${(mc / 1000000).toFixed(1)}M`;
+            if (mc >= 1000)
+                return `${(mc / 1000).toFixed(0)}k`;
+            return mc.toFixed(0);
+        };
         await ctx.editMessageText(`🎰 *PEGASUS LOTTERY*
 
 Current Pool: *${pool.current_amount.toFixed(2)} SOL* 💰
-Next Milestone: ${pool.next_milestone.toLocaleString()} SOL
+
+Next Milestone: *$${formatMC(nextMilestone)} Market Cap*
+Current Market Cap: *$${formatMC(currentMC)}*
 Progress: [${progressBar}] ${progress.toFixed(1)}%
 
-Volume climbing... Pool growing! 🐴✨`, { parse_mode: 'Markdown' });
+Market cap climbing... Pool growing! 🐴✨`, { parse_mode: 'Markdown' });
     }
     catch (e) {
         console.error('Lottery callback error:', e);

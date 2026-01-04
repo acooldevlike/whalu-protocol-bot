@@ -20,7 +20,7 @@ git add .
 git commit -m "Initial commit - Pegasus Protocol Bot"
 
 # Add your GitHub repository
-git remote add origin https://github.com/YOUR_USERNAME/pegasus-protocol-bot.git
+git remote add origin https://github.com/JustadevM/pegasus-protocol-bot.git
 
 # Push to GitHub
 git push -u origin main
