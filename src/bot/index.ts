@@ -147,19 +147,12 @@ bot.command('tides', requireConfiguration, tidesCommand)
 
 // Handle button callbacks
 bot.action('help', async (ctx) => {
-  try {
-    await ctx.answerCbQuery()
-  } catch (e) {
-    // Ignore old callback query errors
-  }
-  try {
-    await ctx.editMessageText(
-    `🐋 *WHALU PROTOCOL Commands*
+  const helpText = `🐋 *WHALU PROTOCOL Commands*
 
 🔑 *WALLET:*
-/link\_wallet - Link Solana wallet
-/my\_wallet - View wallet
-/unlink\_wallet - Disconnect
+/link\\_wallet - Link Solana wallet
+/my\\_wallet - View wallet
+/unlink\\_wallet - Disconnect
 
 💰 *BALANCE:*
 /balance - Check balance
@@ -182,11 +175,28 @@ bot.action('help', async (ctx) => {
 /depths - Complete metrics
 /stats - Protocol stats
 
-The ocean rewards patience. 🐋`,
-    { parse_mode: 'Markdown' }
-  )
+The ocean rewards patience. 🐋`
+
+  try {
+    await ctx.answerCbQuery()
   } catch (e) {
-    console.error('Help callback error:', e)
+    // Ignore old callback query errors
+  }
+  
+  try {
+    await ctx.editMessageText(helpText, { 
+      parse_mode: 'Markdown',
+      reply_markup: undefined 
+    })
+    console.log('✅ Help callback executed successfully')
+  } catch (e: any) {
+    console.error('❌ Help callback error:', e.message)
+    // If editing fails, send a new message
+    try {
+      await ctx.reply(helpText, { parse_mode: 'Markdown' })
+    } catch (replyError) {
+      console.error('❌ Help reply error:', replyError)
+    }
   }
 })
 
