@@ -2,6 +2,12 @@
 
 Three ocean currents flowing as one.
 
+## 🔗 Links
+
+- **Telegram Bot**: [@Whalu_Protocol_bot](https://t.me/Whalu_Protocol_bot)
+- **Website**: [whaluprotocol.app](https://whaluprotocol.app/)
+- **Twitter**: [@WhaluProtocol](https://x.com/WhaluProtocol)
+
 ## 📋 Overview
 
 WHALU Protocol is a sophisticated Telegram bot that manages three interconnected systems on the Solana blockchain, rewarding token holders through automated buybacks, wave rider scoring, and collective milestone multipliers.
