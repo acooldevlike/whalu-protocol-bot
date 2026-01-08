@@ -190,6 +190,19 @@ The ocean rewards patience. 🐋`,
   }
 })
 
+bot.action('fuchi', async (ctx) => {
+  try {
+    await ctx.answerCbQuery()
+  } catch (e) {
+    // Ignore old callback query errors
+  }
+  try {
+    await fuchiCommand(ctx as any)
+  } catch (e) {
+    console.error('Fuchi callback error:', e)
+  }
+})
+
 bot.action('lottery', async (ctx) => {
   try {
     await ctx.answerCbQuery()

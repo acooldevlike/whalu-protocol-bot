@@ -171,6 +171,20 @@ The ocean rewards patience. 🐋`, { parse_mode: 'Markdown' });
         console.error('Help callback error:', e);
     }
 });
+bot.action('fuchi', async (ctx) => {
+    try {
+        await ctx.answerCbQuery();
+    }
+    catch (e) {
+        // Ignore old callback query errors
+    }
+    try {
+        await (0, fuchi_1.fuchiCommand)(ctx);
+    }
+    catch (e) {
+        console.error('Fuchi callback error:', e);
+    }
+});
 bot.action('lottery', async (ctx) => {
     try {
         await ctx.answerCbQuery();

@@ -4,37 +4,37 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.startCommand = startCommand;
+const telegraf_1 = require("telegraf");
 const db_1 = __importDefault(require("../../database/db"));
 async function startCommand(ctx) {
     try {
         const telegramId = ctx.from.id;
         const username = ctx.from.username || 'Unknown';
         db_1.default.prepare('INSERT OR IGNORE INTO users (telegram_id, username) VALUES (?, ?)').run(telegramId, username);
-        // Direct simple query
+        // Check if token is configured
         const row = db_1.default.prepare('SELECT token_ca FROM bot_config WHERE id = 1').get();
-        console.log('/start - Database result:', row);
-        if (!row || !row.token_ca) {
-            await ctx.reply("🐋 Welcome to WHALU Protocol\n\n" +
-                "⚠️ Bot not configured yet.\n\n" +
-                "Run /setup_ca to configure your token first.");
-            return;
-        }
-        // CONFIGURED - Show welcome
-        const tokenShort = `${row.token_ca.slice(0, 8)}...${row.token_ca.slice(-8)}`;
-        await ctx.reply("🐋 Welcome to WHALU Protocol\n\n" +
-            "Three currents flow as one:\n\n" +
-            "海流 KAIRYU (50%) - Automated buybacks\n" +
-            "波 NAMI (30%) - Wave rider rewards\n" +
-            "淵 FUCHI (20%) - Collective multipliers\n\n" +
-            "━━━━━━━━━━━━━━━\n\n" +
-            "/link_wallet - Connect\n" +
-            "/kairyu - Buyback status\n" +
-            "/nami - Your wave score\n" +
-            "/fuchi - Pool progress\n" +
-            "/help - All commands\n\n" +
-            "The ocean rewards patience.\n\n" +
-            `🪙 Token: ${tokenShort}\n` +
-            "鯨");
+        const isConfigured = row && row.token_ca;
+        // Build welcome message
+        let message = `🐋 Welcome to WHALU Protocol!\n\n`;
+        message += `鯨 = Whale in Japanese\n\n`;
+        message += `Coordinate community SOL buybacks with ocean precision.\n\n`;
+        message += `🌊 Three currents flowing as one\n`;
+        message += `🔒 Automated buybacks with transparency\n`;
+        message += `💎 Wave rider scoring system\n`;
+        message += `📊 Track all your protocol activity\n\n`;
+        message += `Type /help to see all available commands.\n\n`;
+        message += `Ocean precision. Global coordination. 鯨`;
+        // Create inline keyboard buttons
+        const keyboard = telegraf_1.Markup.inlineKeyboard([
+            [
+                telegraf_1.Markup.button.callback('📊 View Commands', 'help'),
+                telegraf_1.Markup.button.callback('🌀 Check Fuchi', 'fuchi')
+            ],
+            [
+                telegraf_1.Markup.button.url('💰 Buy Now', `https://pump.fun/${isConfigured ? row.token_ca : ''}`)
+            ]
+        ]);
+        await ctx.reply(message, keyboard);
     }
     catch (error) {
         console.error('/start error:', error);
