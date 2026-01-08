@@ -29,7 +29,10 @@ export async function setupCACommand(ctx: Context) {
   
   await ctx.reply(
     `🔧 *TOKEN CONFIGURATION*\n\n` +
-    `Send your token CA (Solana mint address):\n\n` +
+    `Send your token's Contract Address (CA):\n` +
+    `This is the Solana mint address of your token.\n\n` +
+    `⚠️ NOT your private key - just the token address!\n\n` +
+    `Example: Efs9Ktsi9CCNqVcuT6pdpe9R33B7tjmQPxvVuZVpump\n\n` +
     `Type /cancel to abort.`,
     { parse_mode: 'Markdown' }
   )
