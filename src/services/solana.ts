@@ -11,8 +11,15 @@ async function initWallet() {
   
   // Load or generate wallet
   if (process.env.SOLANA_PRIVATE_KEY) {
-    wallet = Keypair.fromSecretKey(bs58.decode(process.env.SOLANA_PRIVATE_KEY))
-    console.log('✅ Loaded existing wallet:', wallet.publicKey.toBase58())
+    try {
+      wallet = Keypair.fromSecretKey(bs58.decode(process.env.SOLANA_PRIVATE_KEY))
+      console.log('✅ Loaded existing wallet:', wallet.publicKey.toBase58())
+    } catch (error) {
+      console.log('⚠️ Invalid SOLANA_PRIVATE_KEY in .env, generating new wallet...')
+      wallet = Keypair.generate()
+      console.log('✅ Generated new wallet:', wallet.publicKey.toBase58())
+      console.log('💡 Add to .env: SOLANA_PRIVATE_KEY=' + bs58.encode(wallet.secretKey))
+    }
   } else {
     wallet = Keypair.generate()
     console.log('✅ Generated new wallet:', wallet.publicKey.toBase58())

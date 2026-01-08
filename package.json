@@ -1,7 +1,7 @@
 {
-  "name": "pegasus-protocol-bot",
+  "name": "whalu-protocol-bot",
   "version": "1.0.0",
-  "description": "Pegasus Protocol - Professional Telegram bot for automated Solana token buybacks with integrated lottery system",
+  "description": "WHALU Protocol Telegram Bot - Three ocean currents: Kairyu Flow, Nami Score, Fuchi Pool",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
@@ -12,14 +12,13 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
+    "whalu",
+    "solana",
     "telegram",
     "bot",
-    "solana",
-    "buyback",
-    "lottery",
-    "crypto"
+    "defi"
   ],
-  "author": "",
+  "author": "Your Name",
   "license": "MIT",
   "dependencies": {
     "@solana/spl-token": "^0.3.11",

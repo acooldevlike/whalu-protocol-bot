@@ -41,7 +41,7 @@ async function freezeStatusCommand(ctx) {
             message += `✅ No rug pulls\n`;
             message += `✅ Community trust\n\n`;
             if (freezeRecord.freeze_type === 'permanent') {
-                message += `The freeze is irreversible. Pegasus ascends with holders. 🐴✨\n\n`;
+                message += `The freeze is irreversible. WHALU flows with holders. 🐋\n\n`;
             }
             message += `Verify: [View on Solscan](${txLink})`;
             await ctx.reply(message, { parse_mode: 'Markdown' });
@@ -62,7 +62,7 @@ async function freezeStatusCommand(ctx) {
                 }
                 else {
                     message += `Freeze coming soon. Stay tuned for announcement.\n\n`;
-                    message += `The protocol will demonstrate commitment through permanent wallet locking. 🐴✨`;
+                    message += `The protocol will demonstrate commitment through permanent wallet locking. 🐋`;
                 }
             }
             else {

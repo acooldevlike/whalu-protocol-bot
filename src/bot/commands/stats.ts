@@ -19,16 +19,15 @@ export async function statsCommand(ctx: Context) {
     const nextMilestone = pool?.next_milestone_market_cap || 30000
     
     await ctx.reply(
-      `📊 *Buyback Statistics*\n\n` +
+      `📊 *WHALU Protocol Statistics*\n\n` +
       `Current Market Cap: *$${formatMarketCap(currentMC)}*\n` +
       `Total Buybacks: ${txCount?.count || 0}\n` +
       `Total SOL Spent: ${(volume?.total_volume || 0).toFixed(2)} SOL\n` +
       `Average Price: ${avgPrice?.avg ? avgPrice.avg.toFixed(6) : 'N/A'}\n\n` +
-      `Lottery Pool: *${(pool?.current_amount || 0).toFixed(2)} SOL*\n` +
+      `FUCHI Pool: *${(pool?.current_amount || 0).toFixed(2)} SOL*\n` +
       `Next Milestone: *$${formatMarketCap(nextMilestone)}*\n\n` +
-      `Active Triggers: ${triggers?.count || 0}\n` +
-      `🔒 Freeze Status: ${freezeStatus}\n\n` +
-      `The protocol ascends. ⬆️`,
+      `Active Triggers: ${triggers?.count || 0}\n\n` +
+      `The ocean rewards patience. 🐋`,
       { parse_mode: 'Markdown' }
     )
   } catch (error) {

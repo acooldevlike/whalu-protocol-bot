@@ -4,7 +4,7 @@ import { wallet, getWalletAddress, getBalance } from './services/solana'
 import { startMarketCapTracking } from './services/marketCapTracker'
 
 async function start() {
-  console.log('🐴 PEGASUS PROTOCOL BOT STARTING...\n')
+  console.log('🐋 WHALU PROTOCOL BOT STARTING...\n')
   
   // Check wallet balance (this initializes the wallet)
   const balance = await getBalance()

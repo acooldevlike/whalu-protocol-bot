@@ -8,7 +8,7 @@ const bot_1 = __importDefault(require("./bot"));
 const solana_1 = require("./services/solana");
 const marketCapTracker_1 = require("./services/marketCapTracker");
 async function start() {
-    console.log('🐴 PEGASUS PROTOCOL BOT STARTING...\n');
+    console.log('🐋 WHALU PROTOCOL BOT STARTING...\n');
     // Check wallet balance (this initializes the wallet)
     const balance = await (0, solana_1.getBalance)();
     const address = (0, solana_1.getWalletAddress)();

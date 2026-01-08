@@ -2,34 +2,46 @@ import { Context } from 'telegraf'
 
 export async function helpCommand(ctx: Context) {
   await ctx.reply(
-    `🐴 *PEGASUS PROTOCOL Commands*
+    `🐋 *WHALU PROTOCOL Commands*
 
-🔑 *WALLET COMMANDS:*
-/link\\_wallet - Link your Solana wallet
-/my\\_wallet - View wallet info & balance
-/unlink\\_wallet - Remove linked wallet
+🔑 *WALLET:*
+/link\\_wallet - Link Solana wallet
+/my\\_wallet - View wallet
+/unlink\\_wallet - Disconnect
 
-💰 *BUYBACK COMMANDS:*
-/balance - Check your SOL balance
-/buyback <amount> - Execute manual buyback
-  _Example: /buyback 1.5_
-/auto\\_buyback <price> <amount> - Set price trigger
-  _Example: /auto\\_buyback 0.05 2_
-/cancel\\_trigger - Cancel active price triggers
+💰 *BALANCE:*
+/balance - Check balance
 
-🎰 *LOTTERY COMMANDS:*
-/lottery - Current pool & next milestone
-/lottery\\_history - View past winners
-/next\\_milestone - Progress to next lottery
+🌊 *KAIRYU FLOW (50%):*
+/kairyu - Buyback status
+/flow - Recent waves
 
-💎 *TRANSPARENCY:*
-/freeze\\_status - Check dev wallet freeze status
+🏄 *NAMI SCORE (30%):*
+/nami - Your wave score
+/entry - Entry quality
+/diamond - Diamond hands
+/reef - Score leaderboard
 
-📊 *STATS & INFO:*
-/stats - View buyback statistics
-/help - Show this message
+🌀 *FUCHI POOL (20%):*
+/fuchi - Milestone progress
+/milestones - All milestones
+/unlocked - Active multipliers
 
-Need help? Ascension awaits. 🐴✨`,
+📊 *METRICS:*
+/depths - Complete metrics
+/tides - Fee schedule
+/stats - Protocol stats
+
+💎 *REWARDS:*
+/claim - Collect rewards
+/voyage - Earning history
+
+⚙️ *ADMIN:*
+/pause - Pause automation
+/resume - Resume automation
+/stop - Stop and withdraw
+
+The ocean rewards patience. 🐋`,
     { parse_mode: 'Markdown' }
   )
 }

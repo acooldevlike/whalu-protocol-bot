@@ -23,7 +23,7 @@ export async function nextMilestoneCommand(ctx: Context) {
       `Current: *$${formatMarketCap(currentMC)}*\n` +
       `Remaining: *$${formatMarketCap(remaining)}*\n\n` +
       `Progress: ${progressBar} ${percentage.toFixed(1)}%\n\n` +
-      `Keep ascending! 🐴✨`,
+      `The ocean rewards patience. 🐋`,
       { parse_mode: 'Markdown' }
     )
   } catch (error) {

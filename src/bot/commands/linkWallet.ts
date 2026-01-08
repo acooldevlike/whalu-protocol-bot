@@ -1,8 +1,10 @@
 import { Context } from 'telegraf'
-import { Keypair } from '@solana/web3.js'
+import { Keypair, Connection, LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js'
 import bs58 from 'bs58'
 import db from '../../database/db'
 import { encrypt } from '../../utils/encryption'
+
+const connection = new Connection(process.env.SOLANA_RPC_URL || 'https://api.mainnet-beta.solana.com', 'confirmed')
 
 const awaitingWalletLink = new Map<number, boolean>()
 
@@ -121,15 +123,33 @@ export async function myWalletCommand(ctx: Context) {
     return
   }
   
-  const shortAddress = `${user.wallet_address.slice(0, 4)}...${user.wallet_address.slice(-4)}`
-  
-  await ctx.reply(
-    `💎 *Your Wallet*\n\n` +
-    `Address: \`${shortAddress}\`\n\n` +
-    `Status: 🟢 Connected\n\n` +
-    `Ready to ascend! 🐴`,
-    { parse_mode: 'Markdown' }
-  )
+  try {
+    const publicKey = new PublicKey(user.wallet_address)
+    const balance = await connection.getBalance(publicKey)
+    const balanceSOL = balance / LAMPORTS_PER_SOL
+    
+    const shortAddress = `${user.wallet_address.slice(0, 4)}...${user.wallet_address.slice(-4)}`
+    
+    await ctx.reply(
+      `💎 *Your Wallet*\n\n` +
+      `Address: \`${shortAddress}\`\n` +
+      `Balance: *${balanceSOL.toFixed(4)} SOL*\n\n` +
+      `Status: 🟢 Connected\n\n` +
+      `Ready for the depths! 🐋`,
+      { parse_mode: 'Markdown' }
+    )
+  } catch (error) {
+    console.error('Balance check error:', error)
+    const shortAddress = `${user.wallet_address.slice(0, 4)}...${user.wallet_address.slice(-4)}`
+    await ctx.reply(
+      `💎 *Your Wallet*\n\n` +
+      `Address: \`${shortAddress}\`\n\n` +
+      `Status: 🟢 Connected\n` +
+      `⚠️ Could not fetch balance\n\n` +
+      `Ready for the depths! 🐋`,
+      { parse_mode: 'Markdown' }
+    )
+  }
 }
 
 export async function unlinkWalletCommand(ctx: Context) {

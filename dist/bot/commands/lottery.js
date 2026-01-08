@@ -18,13 +18,14 @@ async function lotteryCommand(ctx) {
         const nextMilestone = pool.next_milestone_market_cap || 30000;
         const percentage = Math.min((currentMC / nextMilestone) * 100, 100);
         const progressBar = (0, marketCapTracker_1.createProgressBar)(percentage);
-        await ctx.reply(`🎰 *PEGASUS LOTTERY*\n\n` +
+        await ctx.reply(`🌀 *FUCHI POOL*\n\n` +
             `Current Pool: *${poolAmount} SOL* 💰\n\n` +
             `Next Milestone: *$${(0, marketCapTracker_1.formatMarketCap)(nextMilestone)} Market Cap*\n` +
             `Current Market Cap: *$${(0, marketCapTracker_1.formatMarketCap)(currentMC)}*\n` +
             `Progress: ${progressBar} ${percentage.toFixed(1)}%\n\n` +
-            `When we hit $${(0, marketCapTracker_1.formatMarketCap)(nextMilestone)} market cap, a random holder wins the entire pool!\n\n` +
-            `Market cap climbing... Pool growing! 🐴✨`, { parse_mode: 'Markdown' });
+            `Collective milestone multipliers unlock as the community grows.\n` +
+            `All holders benefit from active multipliers.\n\n` +
+            `The ocean rewards patience. 🐋`, { parse_mode: 'Markdown' });
     }
     catch (error) {
         console.error('❌ Lottery error:', error);

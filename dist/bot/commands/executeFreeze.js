@@ -66,7 +66,7 @@ async function handleFreezeConfirmation(ctx) {
         return true;
     }
     await ctx.reply(`🔒 *Executing Freeze Protocol...*\n\n` +
-        `This will take a moment. The pegasus is locking down... 🐴💎`, { parse_mode: 'Markdown' });
+        `This will take a moment. The whale is locking down... 🐋💎`, { parse_mode: 'Markdown' });
     try {
         // Execute freeze
         const devTokenAccount = process.env.DEV_TOKEN_ACCOUNT;
@@ -113,7 +113,7 @@ async function broadcastFreezeAnnouncement(signature) {
         const message = `
 🔒 *FREEZE PROTOCOL ANNOUNCEMENT* 🔒
 
-The Pegasus Protocol developer wallet has been *PERMANENTLY FROZEN*.
+The WHALU Protocol developer wallet has been *PERMANENTLY FROZEN*.
 
 This means:
 ✅ No selling
@@ -127,7 +127,7 @@ Verify: [View on Solscan](${txLink})
 
 Use /freeze_status to check anytime.
 
-The pegasus ascends with holders! 🐴💎✨
+The whale flows with holders! 🐋💎
     `.trim();
         console.log(`📢 Broadcasting freeze announcement to ${users.length} users...`);
         for (const user of users) {

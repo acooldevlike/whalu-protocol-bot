@@ -12,7 +12,7 @@ export async function lotteryHistoryCommand(ctx: Context) {
 
 No winners yet!
 
-Be the first to ascend when we hit the next milestone. 🐴✨`,
+Be the first when we hit the next milestone. 🐋`,
       { parse_mode: 'Markdown' }
     )
     return
@@ -37,7 +37,7 @@ Be the first to ascend when we hit the next milestone. 🐴✨`,
   
   message += `Total paid out: ${totalPaid.total.toFixed(2)} SOL\n`
   message += `Total winners: ${winners.length}\n\n`
-  message += `Will you ascend next? 🐴`
+  message += `The ocean rewards patience. 🐋`
   
   await ctx.reply(message, { parse_mode: 'Markdown' })
 }

@@ -9,8 +9,6 @@ const linkWallet_1 = require("./commands/linkWallet");
 const buyback_1 = require("./commands/buyback");
 const start_1 = require("./commands/start");
 const help_1 = require("./commands/help");
-const balance_1 = require("./commands/balance");
-const stats_1 = require("./commands/stats");
 const lottery_1 = require("./commands/lottery");
 const lotteryHistory_1 = require("./commands/lotteryHistory");
 const nextMilestone_1 = require("./commands/nextMilestone");
@@ -19,6 +17,22 @@ const cancelTrigger_1 = require("./commands/cancelTrigger");
 const freezeStatus_1 = require("./commands/freezeStatus");
 const executeFreeze_1 = require("./commands/executeFreeze");
 const cancel_1 = require("./commands/cancel");
+const flow_1 = require("./commands/flow");
+const nami_1 = require("./commands/nami");
+const entry_1 = require("./commands/entry");
+const diamond_1 = require("./commands/diamond");
+const reef_1 = require("./commands/reef");
+const fuchi_1 = require("./commands/fuchi");
+const milestones_1 = require("./commands/milestones");
+const unlocked_1 = require("./commands/unlocked");
+const depths_1 = require("./commands/depths");
+const tides_1 = require("./commands/tides");
+const setupCA_1 = require("./commands/setupCA");
+const resetCA_1 = require("./commands/resetCA");
+const debugConfig_1 = require("./commands/debugConfig");
+const testApi_1 = require("./commands/testApi");
+const verifyToken_1 = require("./commands/verifyToken");
+const requireConfiguration_1 = require("./middleware/requireConfiguration");
 const bot = new telegraf_1.Telegraf(process.env.TELEGRAM_BOT_TOKEN);
 // Global error handler
 bot.catch((err, ctx) => {
@@ -64,6 +78,14 @@ bot.on('text', async (ctx, next) => {
     const walletHandled = await (0, linkWallet_1.handleWalletLinkMessage)(ctx);
     if (walletHandled)
         return;
+    // Check if user is in setup flow
+    const setupHandled = await (0, setupCA_1.handleSetupMessage)(ctx);
+    if (setupHandled)
+        return;
+    // Check if user is in reset confirmation flow
+    const resetHandled = await (0, resetCA_1.handleResetConfirmation)(ctx);
+    if (resetHandled)
+        return;
     // Check if user is in freeze confirmation flow
     const freezeHandled = await (0, executeFreeze_1.handleFreezeConfirmation)(ctx);
     if (freezeHandled)
@@ -75,9 +97,12 @@ bot.on('text', async (ctx, next) => {
 bot.command('start', start_1.startCommand);
 bot.command('help', help_1.helpCommand);
 bot.command('cancel', cancel_1.cancelCommand);
-bot.command('balance', balance_1.balanceCommand);
+bot.command('setup_ca', setupCA_1.setupCACommand);
+bot.command('reset_ca', resetCA_1.resetCACommand);
+bot.command('debug_config', debugConfig_1.debugConfigCommand);
+bot.command('test_api', testApi_1.testApiCommand);
+bot.command('verify_token', verifyToken_1.verifyTokenCommand);
 bot.command('lottery', lottery_1.lotteryCommand);
-bot.command('stats', stats_1.statsCommand);
 bot.command('lottery_history', lotteryHistory_1.lotteryHistoryCommand);
 bot.command('next_milestone', nextMilestone_1.nextMilestoneCommand);
 bot.command('auto_buyback', autoBuyback_1.autoBuybackCommand);
@@ -89,8 +114,22 @@ bot.command('execute_freeze', executeFreeze_1.executeFreezeCommand);
 bot.command('link_wallet', linkWallet_1.linkWalletCommand);
 bot.command('my_wallet', linkWallet_1.myWalletCommand);
 bot.command('unlink_wallet', linkWallet_1.unlinkWalletCommand);
-// Buyback commands
-bot.command('buyback', buyback_1.buybackCommand);
+// Kairyu Flow commands (require configuration)
+bot.command('kairyu', requireConfiguration_1.requireConfiguration, buyback_1.buybackCommand);
+bot.command('flow', requireConfiguration_1.requireConfiguration, flow_1.flowCommand);
+bot.command('buyback', requireConfiguration_1.requireConfiguration, buyback_1.buybackCommand); // Keep alias for compatibility
+// Nami Score commands (require configuration)
+bot.command('nami', requireConfiguration_1.requireConfiguration, nami_1.namiCommand);
+bot.command('entry', requireConfiguration_1.requireConfiguration, entry_1.entryCommand);
+bot.command('diamond', requireConfiguration_1.requireConfiguration, diamond_1.diamondCommand);
+bot.command('reef', requireConfiguration_1.requireConfiguration, reef_1.reefCommand);
+// Fuchi Pool commands (require configuration)
+bot.command('fuchi', requireConfiguration_1.requireConfiguration, fuchi_1.fuchiCommand);
+bot.command('milestones', requireConfiguration_1.requireConfiguration, milestones_1.milestonesCommand);
+bot.command('unlocked', requireConfiguration_1.requireConfiguration, unlocked_1.unlockedCommand);
+// Core metrics commands (require configuration)
+bot.command('depths', requireConfiguration_1.requireConfiguration, depths_1.depthsCommand);
+bot.command('tides', requireConfiguration_1.requireConfiguration, tides_1.tidesCommand);
 // Handle button callbacks
 bot.action('help', async (ctx) => {
     try {
@@ -100,31 +139,36 @@ bot.action('help', async (ctx) => {
         // Ignore old callback query errors
     }
     try {
-        await ctx.editMessageText(`🐴 *PEGASUS PROTOCOL Commands*
+        await ctx.editMessageText(`🐋 *WHALU PROTOCOL Commands*
 
-🔑 *WALLET COMMANDS:*
-/link\_wallet - Link your Solana wallet
-/my\_wallet - View wallet info & balance
-/unlink\_wallet - Remove linked wallet
+🔑 *WALLET:*
+/link\_wallet - Link Solana wallet
+/my\_wallet - View wallet
+/unlink\_wallet - Disconnect
 
-💰 *BUYBACK COMMANDS:*
-/balance - Check your SOL balance
-/buyback <amount> - Execute manual buyback
-  _Example: /buyback 1.5_
-/auto\_buyback <price> <amount> - Set price trigger
-  _Example: /auto\_buyback 0.05 2_
-/cancel\_trigger - Cancel active triggers
+💰 *BALANCE:*
+/balance - Check balance
 
-🎰 *LOTTERY COMMANDS:*
-/lottery - Current pool & next milestone
-/lottery\_history - View past winners
-/next\_milestone - Progress to next lottery
+🌊 *KAIRYU FLOW (50%):*
+/kairyu - Buyback status
+/flow - Recent waves
 
-📊 *STATS & INFO:*
-/stats - View buyback statistics
-/help - Show this message
+🏄 *NAMI SCORE (30%):*
+/nami - Your wave score
+/entry - Entry quality
+/diamond - Diamond hands
+/reef - Score leaderboard
 
-Need help? Ascension awaits. 🐴✨`, { parse_mode: 'Markdown' });
+🌀 *FUCHI POOL (20%):*
+/fuchi - Milestone progress
+/milestones - All milestones
+/unlocked - Active multipliers
+
+📊 *METRICS:*
+/depths - Complete metrics
+/stats - Protocol stats
+
+The ocean rewards patience. 🐋`, { parse_mode: 'Markdown' });
     }
     catch (e) {
         console.error('Help callback error:', e);
@@ -150,7 +194,7 @@ bot.action('lottery', async (ctx) => {
                 return `${(mc / 1000).toFixed(0)}k`;
             return mc.toFixed(0);
         };
-        await ctx.editMessageText(`🎰 *PEGASUS LOTTERY*
+        await ctx.editMessageText(`🌀 *FUCHI POOL*
 
 Current Pool: *${pool.current_amount.toFixed(2)} SOL* 💰
 
@@ -158,7 +202,7 @@ Next Milestone: *$${formatMC(nextMilestone)} Market Cap*
 Current Market Cap: *$${formatMC(currentMC)}*
 Progress: [${progressBar}] ${progress.toFixed(1)}%
 
-Market cap climbing... Pool growing! 🐴✨`, { parse_mode: 'Markdown' });
+The ocean rewards patience. 🐋`, { parse_mode: 'Markdown' });
     }
     catch (e) {
         console.error('Lottery callback error:', e);
@@ -196,7 +240,7 @@ Use /auto\_buyback <price> <amount> to set a trigger.
 
 Example: /auto\_buyback 0.05 2
 
-The bot will execute when price reaches your target! 🐴`, { parse_mode: 'Markdown' });
+The bot will execute when price reaches your target! 🐋`, { parse_mode: 'Markdown' });
     }
     catch (e) {
         console.error('Auto buyback callback error:', e);

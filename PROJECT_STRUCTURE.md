@@ -1,7 +1,7 @@
 # 📁 Project Structure
 
 ```
-pegasus-protocol-bot/
+whalu-protocol-bot/
 ├── src/
 │   ├── bot/                          # Telegram bot implementation
 │   │   ├── commands/                 # Bot command handlers

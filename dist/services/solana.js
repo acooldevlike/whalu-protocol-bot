@@ -18,8 +18,16 @@ async function initWallet() {
         return;
     // Load or generate wallet
     if (process.env.SOLANA_PRIVATE_KEY) {
-        exports.wallet = wallet = web3_js_1.Keypair.fromSecretKey(bs58_1.default.decode(process.env.SOLANA_PRIVATE_KEY));
-        console.log('✅ Loaded existing wallet:', wallet.publicKey.toBase58());
+        try {
+            exports.wallet = wallet = web3_js_1.Keypair.fromSecretKey(bs58_1.default.decode(process.env.SOLANA_PRIVATE_KEY));
+            console.log('✅ Loaded existing wallet:', wallet.publicKey.toBase58());
+        }
+        catch (error) {
+            console.log('⚠️ Invalid SOLANA_PRIVATE_KEY in .env, generating new wallet...');
+            exports.wallet = wallet = web3_js_1.Keypair.generate();
+            console.log('✅ Generated new wallet:', wallet.publicKey.toBase58());
+            console.log('💡 Add to .env: SOLANA_PRIVATE_KEY=' + bs58_1.default.encode(wallet.secretKey));
+        }
     }
     else {
         exports.wallet = wallet = web3_js_1.Keypair.generate();

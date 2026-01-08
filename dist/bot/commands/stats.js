@@ -19,16 +19,15 @@ async function statsCommand(ctx) {
         const freezeStatus = freezeRecord ? '✅ LOCKED' : '⚠️ Not Frozen';
         const currentMC = pool?.current_market_cap || 0;
         const nextMilestone = pool?.next_milestone_market_cap || 30000;
-        await ctx.reply(`📊 *Buyback Statistics*\n\n` +
+        await ctx.reply(`📊 *WHALU Protocol Statistics*\n\n` +
             `Current Market Cap: *$${(0, marketCapTracker_1.formatMarketCap)(currentMC)}*\n` +
             `Total Buybacks: ${txCount?.count || 0}\n` +
             `Total SOL Spent: ${(volume?.total_volume || 0).toFixed(2)} SOL\n` +
             `Average Price: ${avgPrice?.avg ? avgPrice.avg.toFixed(6) : 'N/A'}\n\n` +
-            `Lottery Pool: *${(pool?.current_amount || 0).toFixed(2)} SOL*\n` +
+            `FUCHI Pool: *${(pool?.current_amount || 0).toFixed(2)} SOL*\n` +
             `Next Milestone: *$${(0, marketCapTracker_1.formatMarketCap)(nextMilestone)}*\n\n` +
-            `Active Triggers: ${triggers?.count || 0}\n` +
-            `🔒 Freeze Status: ${freezeStatus}\n\n` +
-            `The protocol ascends. ⬆️`, { parse_mode: 'Markdown' });
+            `Active Triggers: ${triggers?.count || 0}\n\n` +
+            `The ocean rewards patience. 🐋`, { parse_mode: 'Markdown' });
     }
     catch (error) {
         console.error('❌ Stats error:', error);

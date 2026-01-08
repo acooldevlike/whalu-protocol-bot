@@ -1,4 +1,4 @@
-# 🐴 PEGASUS PROTOCOL Bot - Quick Start
+# 🐋 WHALU PROTOCOL Bot - Quick Start
 
 ## What's New: Self-Healing Bot
 
@@ -30,18 +30,13 @@ That's it! The bot will:
 ## What Happens on Startup
 
 ```
-🐴 PEGASUS PROTOCOL BOT STARTING...
+🐋 WHALU PROTOCOL BOT STARTING...
 
 📊 Checking database connection...
-❌ PostgreSQL not connected
-→ Switching to SQLite fallback...
 ✅ SQLite database created
 
 👛 Checking Solana wallet...
-→ No wallet found, generating new devnet wallet...
-✅ New wallet generated: 46cFxD...
-→ Requesting devnet airdrop...
-✅ Received 2 SOL on devnet
+✅ Wallet configured
 
 🗄️  Checking database tables...
 ✅ All tables present
@@ -52,16 +47,15 @@ That's it! The bot will:
 🔍 Verifying all systems...
 ✅ All systems verified
 
-✅ PEGASUS PROTOCOL READY
+✅ WHALU PROTOCOL READY
 ```
 
 ## Database Options
 
 The bot automatically chooses the best available option:
 
-1. **PostgreSQL** (if DATABASE_URL points to postgres)
-2. **SQLite** (fallback, stores in `pegasus.db`)
-3. **Mock** (in-memory, for testing)
+1. **SQLite** (stores in `whalu_protocol.db`)
+2. **Mock** (in-memory, for testing)
 
 No configuration needed - it just works!
 

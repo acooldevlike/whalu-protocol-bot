@@ -19,13 +19,14 @@ export async function lotteryCommand(ctx: Context) {
     const progressBar = createProgressBar(percentage)
     
     await ctx.reply(
-      `🎰 *PEGASUS LOTTERY*\n\n` +
+      `🌀 *FUCHI POOL*\n\n` +
       `Current Pool: *${poolAmount} SOL* 💰\n\n` +
       `Next Milestone: *$${formatMarketCap(nextMilestone)} Market Cap*\n` +
       `Current Market Cap: *$${formatMarketCap(currentMC)}*\n` +
       `Progress: ${progressBar} ${percentage.toFixed(1)}%\n\n` +
-      `When we hit $${formatMarketCap(nextMilestone)} market cap, a random holder wins the entire pool!\n\n` +
-      `Market cap climbing... Pool growing! 🐴✨`,
+      `Collective milestone multipliers unlock as the community grows.\n` +
+      `All holders benefit from active multipliers.\n\n` +
+      `The ocean rewards patience. 🐋`,
       { parse_mode: 'Markdown' }
     )
   } catch (error) {

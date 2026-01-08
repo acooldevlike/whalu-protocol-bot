@@ -11,6 +11,7 @@ const web3_js_1 = require("@solana/web3.js");
 const bs58_1 = __importDefault(require("bs58"));
 const db_1 = __importDefault(require("../../database/db"));
 const encryption_1 = require("../../utils/encryption");
+const connection = new web3_js_1.Connection(process.env.SOLANA_RPC_URL || 'https://api.mainnet-beta.solana.com', 'confirmed');
 const awaitingWalletLink = new Map();
 async function linkWalletCommand(ctx) {
     const telegramId = ctx.from.id;
@@ -93,11 +94,26 @@ async function myWalletCommand(ctx) {
             `Use /link\\_wallet to link your Solana wallet.`, { parse_mode: 'Markdown' });
         return;
     }
-    const shortAddress = `${user.wallet_address.slice(0, 4)}...${user.wallet_address.slice(-4)}`;
-    await ctx.reply(`💎 *Your Wallet*\n\n` +
-        `Address: \`${shortAddress}\`\n\n` +
-        `Status: 🟢 Connected\n\n` +
-        `Ready to ascend! 🐴`, { parse_mode: 'Markdown' });
+    try {
+        const publicKey = new web3_js_1.PublicKey(user.wallet_address);
+        const balance = await connection.getBalance(publicKey);
+        const balanceSOL = balance / web3_js_1.LAMPORTS_PER_SOL;
+        const shortAddress = `${user.wallet_address.slice(0, 4)}...${user.wallet_address.slice(-4)}`;
+        await ctx.reply(`💎 *Your Wallet*\n\n` +
+            `Address: \`${shortAddress}\`\n` +
+            `Balance: *${balanceSOL.toFixed(4)} SOL*\n\n` +
+            `Status: 🟢 Connected\n\n` +
+            `Ready for the depths! 🐋`, { parse_mode: 'Markdown' });
+    }
+    catch (error) {
+        console.error('Balance check error:', error);
+        const shortAddress = `${user.wallet_address.slice(0, 4)}...${user.wallet_address.slice(-4)}`;
+        await ctx.reply(`💎 *Your Wallet*\n\n` +
+            `Address: \`${shortAddress}\`\n\n` +
+            `Status: 🟢 Connected\n` +
+            `⚠️ Could not fetch balance\n\n` +
+            `Ready for the depths! 🐋`, { parse_mode: 'Markdown' });
+    }
 }
 async function unlinkWalletCommand(ctx) {
     const telegramId = ctx.from.id;

@@ -12,7 +12,7 @@ async function lotteryHistoryCommand(ctx) {
 
 No winners yet!
 
-Be the first to ascend when we hit the next milestone. 🐴✨`, { parse_mode: 'Markdown' });
+Be the first when we hit the next milestone. 🐋`, { parse_mode: 'Markdown' });
         return;
     }
     const totalPaid = db_1.default.prepare('SELECT SUM(amount) as total FROM lottery_winners').get();
@@ -30,7 +30,7 @@ Be the first to ascend when we hit the next milestone. 🐴✨`, { parse_mode: '
     });
     message += `Total paid out: ${totalPaid.total.toFixed(2)} SOL\n`;
     message += `Total winners: ${winners.length}\n\n`;
-    message += `Will you ascend next? 🐴`;
+    message += `The ocean rewards patience. 🐋`;
     await ctx.reply(message, { parse_mode: 'Markdown' });
 }
 //# sourceMappingURL=lotteryHistory.js.map

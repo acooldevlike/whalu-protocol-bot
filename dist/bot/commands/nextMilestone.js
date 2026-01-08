@@ -23,7 +23,7 @@ async function nextMilestoneCommand(ctx) {
             `Current: *$${(0, marketCapTracker_1.formatMarketCap)(currentMC)}*\n` +
             `Remaining: *$${(0, marketCapTracker_1.formatMarketCap)(remaining)}*\n\n` +
             `Progress: ${progressBar} ${percentage.toFixed(1)}%\n\n` +
-            `Keep ascending! 🐴✨`, { parse_mode: 'Markdown' });
+            `The ocean rewards patience. 🐋`, { parse_mode: 'Markdown' });
     }
     catch (error) {
         console.error('❌ Next milestone error:', error);

@@ -1,1 +1,1 @@
-{"version":3,"file":"help.js","sourceRoot":"","sources":["../../../src/bot/commands/help.ts"],"names":[],"mappings":";;AAEA,kCAgCC;AAhCM,KAAK,UAAU,WAAW,CAAC,GAAY;IAC5C,MAAM,GAAG,CAAC,KAAK,CACb;;;;;;;;;;;;;;;;;;;;;;;;;;;iCA2B6B,EAC7B,EAAE,UAAU,EAAE,UAAU,EAAE,CAC3B,CAAA;AACH,CAAC"}
+{"version":3,"file":"help.js","sourceRoot":"","sources":["../../../src/bot/commands/help.ts"],"names":[],"mappings":";;AAEA,kCA4CC;AA5CM,KAAK,UAAU,WAAW,CAAC,GAAY;IAC5C,MAAM,GAAG,CAAC,KAAK,CACb;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;+BAuC2B,EAC3B,EAAE,UAAU,EAAE,UAAU,EAAE,CAC3B,CAAA;AACH,CAAC"}

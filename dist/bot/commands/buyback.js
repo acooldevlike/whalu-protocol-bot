@@ -17,13 +17,39 @@ const feeDistribution_1 = require("../../services/feeDistribution");
 const SOL_MINT = 'So11111111111111111111111111111111111111112';
 const pendingBuybacks = new Map();
 async function buybackCommand(ctx) {
+    try {
+        const row = db_1.default.prepare('SELECT token_ca FROM bot_config WHERE id = 1').get();
+        if (!row || !row.token_ca) {
+            await ctx.reply("⚠️ Bot not configured. Run /setup_ca first.");
+            return;
+        }
+        const tokenCA = row.token_ca;
+        // Get buyback stats from database
+        const txCount = db_1.default.prepare('SELECT COUNT(*) as count FROM buyback_transactions').get();
+        const volume = db_1.default.prepare('SELECT total_volume FROM buyback_volume WHERE id = 1').get();
+        const lastBuyback = db_1.default.prepare('SELECT * FROM buyback_transactions ORDER BY timestamp DESC LIMIT 1').get();
+        const totalBuybacks = volume?.total_volume || 0;
+        await ctx.reply("🌊 KAIRYU FLOW STATUS\n\n" +
+            `Token: ${tokenCA.slice(0, 8)}...${tokenCA.slice(-8)}\n\n` +
+            "📊 BUYBACK STATS:\n" +
+            `Total SOL spent: ${totalBuybacks.toFixed(2)} SOL\n` +
+            `Total buybacks: ${txCount?.count || 0}\n` +
+            `Last buyback: ${lastBuyback ? 'Recently' : 'None yet'}\n` +
+            `Next buyback: Waiting for volume\n\n` +
+            "🌊 Automated buyback system\n" +
+            "50% of fees → token repurchases\n\n" +
+            "The current flows constantly.");
+        return;
+    }
+    catch (error) {
+        console.error('/kairyu error:', error);
+        await ctx.reply("❌ Error: " + error.message);
+        return;
+    }
+    // Legacy manual buyback code below (kept for future use)
     const telegramId = ctx.from.id;
     const args = ctx.message?.text?.split(' ').slice(1);
     if (!args || args.length === 0) {
-        await ctx.reply(`💰 *Execute Buyback*\n\n` +
-            `Usage: /buyback <amount>\n\n` +
-            `Example: \`/buyback 1.5\`\n\n` +
-            `This will buy tokens using SOL from your linked wallet.`, { parse_mode: 'Markdown' });
         return;
     }
     const amount = parseFloat(args[0]);
@@ -39,9 +65,11 @@ async function buybackCommand(ctx) {
             `This allows the bot to execute buybacks from your wallet.`, { parse_mode: 'Markdown' });
         return;
     }
-    const tokenMint = process.env.TOKEN_MINT_ADDRESS;
+    // Get token from config instead of env
+    const configRow = db_1.default.prepare('SELECT token_ca FROM bot_config WHERE id = 1').get();
+    const tokenMint = configRow?.token_ca;
     if (!tokenMint) {
-        await ctx.reply(`❌ Token mint address not configured. Contact admin.`);
+        await ctx.reply(`❌ Token not configured. Run /setup_ca first.`);
         return;
     }
     try {
@@ -57,7 +85,9 @@ async function buybackCommand(ctx) {
         // Calculate fee distribution
         const fees = (0, feeDistribution_1.calculateFees)(amount);
         // Get quote from Jupiter for buyback portion only
-        await ctx.reply(`⏳ Processing buyback...\n\nThis may take a few moments. The pegasus is ascending! 🐴`);
+        await ctx.reply(`⏳ Processing buyback...
+
+This may take a few moments. The whale flows! 🐋`);
         const buybackLamports = Math.floor(fees.buybackAmount * web3_js_1.LAMPORTS_PER_SOL);
         const quote = await (0, swap_1.getSwapQuote)(SOL_MINT, tokenMint, buybackLamports);
         const tokensOut = parseFloat(quote.outAmount) / 1e9; // Assuming 9 decimals
@@ -115,7 +145,9 @@ async function confirmBuyback(ctx, bot) {
     const { amount } = pending;
     pendingBuybacks.delete(telegramId);
     try {
-        await ctx.editMessageText(`⏳ Executing buyback...\n\nThis may take a few moments. The pegasus is ascending! 🐴`);
+        await ctx.editMessageText(`⏳ Executing buyback...
+
+This may take a few moments. The whale flows! 🐋`);
         // Get user's encrypted wallet
         const user = db_1.default.prepare('SELECT wallet_private_key_encrypted FROM users WHERE telegram_id = ?').get(telegramId);
         // Decrypt private key
@@ -123,20 +155,20 @@ async function confirmBuyback(ctx, bot) {
         const wallet = web3_js_1.Keypair.fromSecretKey(bs58_1.default.decode(privateKeyBase58));
         const tokenMint = process.env.TOKEN_MINT_ADDRESS;
         const fees = (0, feeDistribution_1.calculateFees)(amount);
-        console.log(`🔄 Executing buyback for user ${telegramId}: ${amount} SOL`);
+        console.log(` Executing buyback for user ${telegramId}: ${amount} SOL`);
         console.log(`Fee distribution: Buyback ${fees.buybackAmount}, Creator ${fees.creatorAmount}, Lottery ${fees.lotteryAmount}`);
         // Step 1: Send creator fee
         let creatorTx = null;
         if (fees.creatorAmount > 0) {
-            console.log('💰 Sending creator fee...');
+            console.log(' Sending creator fee...');
             creatorTx = await (0, feeDistribution_1.distributeCreatorFee)(wallet, fees.creatorAmount);
         }
         // Step 2: Execute swap with buyback portion
         const buybackLamports = Math.floor(fees.buybackAmount * web3_js_1.LAMPORTS_PER_SOL);
-        console.log('🔄 Executing Jupiter swap...');
+        console.log(' Executing Jupiter swap...');
         const swapSignature = await (0, swap_1.executeSwap)(wallet, SOL_MINT, tokenMint, buybackLamports);
         // Step 3: Update database
-        console.log('📊 Updating database...');
+        console.log(' Updating database...');
         // Update total volume
         db_1.default.prepare('UPDATE buyback_volume SET total_volume = total_volume + ?, last_updated = strftime("%s", "now") WHERE id = 1').run(amount);
         // Update lottery pool (lottery fee stays in user's wallet, tracked in DB)
@@ -151,7 +183,9 @@ async function confirmBuyback(ctx, bot) {
         const txLink = process.env.SOLANA_RPC_URL?.includes('devnet')
             ? `https://solscan.io/tx/${swapSignature}?cluster=devnet`
             : `https://solscan.io/tx/${swapSignature}`;
-        let successMessage = `✅ *Buyback Executed!* 🐴\n\n`;
+        let successMessage = `✅ *Buyback Executed!* 🐋
+
+`;
         successMessage += `Amount: ${amount} SOL\n`;
         successMessage += `Buyback TX: [View on Solscan](${txLink})\n\n`;
         if (creatorTx) {
@@ -163,7 +197,7 @@ async function confirmBuyback(ctx, bot) {
         successMessage += `\n*Results:*\n`;
         successMessage += `Lottery pool: +${fees.lotteryAmount.toFixed(4)} SOL (now ${pool.current_amount.toFixed(2)} SOL)\n`;
         successMessage += `Total volume: ${volume.total_volume.toFixed(2)} SOL\n\n`;
-        successMessage += `Keep ascending! ⬆️`;
+        successMessage += `The ocean rewards patience. 🐋`;
         await ctx.editMessageText(successMessage, { parse_mode: 'Markdown' });
         // Check if lottery should be executed
         setTimeout(() => {
