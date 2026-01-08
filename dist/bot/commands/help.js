@@ -14,7 +14,6 @@ async function helpCommand(ctx) {
 
 🌊 *KAIRYU FLOW (50%):*
 /kairyu - Buyback status
-/flow - Recent waves
 
 🏄 *NAMI SCORE (30%):*
 /nami - Your wave score

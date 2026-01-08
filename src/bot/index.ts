@@ -18,7 +18,6 @@ import { cancelTriggerCommand, handleCancelTrigger } from './commands/cancelTrig
 import { freezeStatusCommand } from './commands/freezeStatus'
 import { executeFreezeCommand, handleFreezeConfirmation } from './commands/executeFreeze'
 import { cancelCommand } from './commands/cancel'
-import { flowCommand } from './commands/flow'
 import { namiCommand } from './commands/nami'
 import { entryCommand } from './commands/entry'
 import { diamondCommand } from './commands/diamond'
@@ -129,7 +128,6 @@ bot.command('unlink_wallet', unlinkWalletCommand)
 
 // Kairyu Flow commands (require configuration)
 bot.command('kairyu', requireConfiguration, buybackCommand)
-bot.command('flow', requireConfiguration, flowCommand)
 bot.command('buyback', requireConfiguration, buybackCommand) // Keep alias for compatibility
 
 // Nami Score commands (require configuration)
@@ -168,7 +166,6 @@ bot.action('help', async (ctx) => {
 
 🌊 *KAIRYU FLOW (50%):*
 /kairyu - Buyback status
-/flow - Recent waves
 
 🏄 *NAMI SCORE (30%):*
 /nami - Your wave score

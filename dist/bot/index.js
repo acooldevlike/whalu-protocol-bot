@@ -17,7 +17,6 @@ const cancelTrigger_1 = require("./commands/cancelTrigger");
 const freezeStatus_1 = require("./commands/freezeStatus");
 const executeFreeze_1 = require("./commands/executeFreeze");
 const cancel_1 = require("./commands/cancel");
-const flow_1 = require("./commands/flow");
 const nami_1 = require("./commands/nami");
 const entry_1 = require("./commands/entry");
 const diamond_1 = require("./commands/diamond");
@@ -116,7 +115,6 @@ bot.command('my_wallet', linkWallet_1.myWalletCommand);
 bot.command('unlink_wallet', linkWallet_1.unlinkWalletCommand);
 // Kairyu Flow commands (require configuration)
 bot.command('kairyu', requireConfiguration_1.requireConfiguration, buyback_1.buybackCommand);
-bot.command('flow', requireConfiguration_1.requireConfiguration, flow_1.flowCommand);
 bot.command('buyback', requireConfiguration_1.requireConfiguration, buyback_1.buybackCommand); // Keep alias for compatibility
 // Nami Score commands (require configuration)
 bot.command('nami', requireConfiguration_1.requireConfiguration, nami_1.namiCommand);
@@ -151,7 +149,6 @@ bot.action('help', async (ctx) => {
 
 🌊 *KAIRYU FLOW (50%):*
 /kairyu - Buyback status
-/flow - Recent waves
 
 🏄 *NAMI SCORE (30%):*
 /nami - Your wave score
