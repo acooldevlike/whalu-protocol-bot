@@ -4,14 +4,19 @@ import db from '../../database/db'
 
 export async function startCommand(ctx: Context) {
   try {
+    console.log('📨 /start command triggered')
     const telegramId = ctx.from!.id
     const username = ctx.from!.username || 'Unknown'
+    
+    console.log(`User: ${telegramId} (${username})`)
     
     db.prepare('INSERT OR IGNORE INTO users (telegram_id, username) VALUES (?, ?)').run(telegramId, username)
     
     // Check if token is configured
     const row = db.prepare('SELECT token_ca FROM bot_config WHERE id = 1').get() as any
     const isConfigured = row && row.token_ca
+    
+    console.log(`Token configured: ${isConfigured ? 'Yes' : 'No'}`)
     
     // Build welcome message
     let message = `🐋 Welcome to WHALU Protocol!\n\n`
@@ -26,6 +31,8 @@ export async function startCommand(ctx: Context) {
     message += `Type /help to see all available commands.\n\n`
     message += `Ocean precision. Global coordination. 鯨`
     
+    console.log('✅ Welcome message built, sending...')
+    
     // Create inline keyboard buttons
     const keyboard = Markup.inlineKeyboard([
       [
@@ -38,9 +45,10 @@ export async function startCommand(ctx: Context) {
     ])
     
     await ctx.reply(message, keyboard)
+    console.log('✅ /start message sent successfully')
     
   } catch (error: any) {
-    console.error('/start error:', error)
+    console.error('❌ /start error:', error)
     await ctx.reply("❌ Error: " + error.message)
   }
 }
