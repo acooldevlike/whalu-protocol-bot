@@ -25,7 +25,7 @@ export async function buybackCommand(ctx: Context) {
     // Get buyback stats from database
     const txCount = db.prepare('SELECT COUNT(*) as count FROM buyback_transactions').get() as any
     const volume = db.prepare('SELECT total_volume FROM buyback_volume WHERE id = 1').get() as any
-    const lastBuyback = db.prepare('SELECT * FROM buyback_transactions ORDER BY timestamp DESC LIMIT 1').get() as any
+    const lastBuyback = db.prepare('SELECT * FROM buyback_transactions ORDER BY created_at DESC LIMIT 1').get() as any
     const totalBuybacks = volume?.total_volume || 0
     
     await ctx.reply(
