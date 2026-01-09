@@ -5,6 +5,7 @@ import { getTotalMultiplier } from '../../services/fuchi/fuchiPool'
 
 export async function tidesCommand(ctx: Context) {
   try {
+    console.log('🌊 /tides command started')
     const telegramId = ctx.from!.id
     
     // Mock accumulated fees

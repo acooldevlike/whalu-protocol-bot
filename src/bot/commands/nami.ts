@@ -4,10 +4,12 @@ import { getNamiScore, getWalletRank, calculateWeeklyShare } from '../../service
 
 export async function namiCommand(ctx: Context) {
   try {
+    console.log('📊 /nami command started')
     const telegramId = ctx.from!.id
     
     // Get user's wallet from database
     const user = db.prepare('SELECT wallet_address FROM users WHERE telegram_id = ?').get(telegramId) as any
+    console.log('User wallet check:', { telegramId, hasWallet: !!user?.wallet_address })
     
     if (!user || !user.wallet_address) {
       await ctx.reply(
